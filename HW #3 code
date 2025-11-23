@@ -1,0 +1,42 @@
+##Extract the first column from health_data.py and count unique values
+import matplotlib
+import pandas 
+import numpy as np
+
+#Run this directly in terminal    
+cut -d',' -f1 health_data.csv | tail -n +2 | sort | uniq -c | wc -l > output/part1_patient_count.txt ##So this counts the values and the values are printed in the output file
+
+# Find and count readings where systolic BP > 130
+# Expected tools: grep or awk, wc
+# Output format: Single number (e.g., "8543")
+# Save to: output/part1_high_bp_count.txt 
+awk -F',' '{print $4}' health_data.csv   # Print column 4
+awk -F',' '$4 > 130' health_data.csv > output/part1_high_bp_count.txt
+
+# Calculate average temperature across all readings
+# Expected tools: cut, awk, tail
+# Output format: Single number with 2 decimal places (e.g., "98.25")
+# Save to: output/part1_avg_temp.txt
+awk -F',' 'NR>1 {sum+=$6; count++} END {printf "%.2f\n", sum/count}' health_data.csv > output/part1_avg_temp.txt
+
+# Find the top 5 highest glucose readings
+# Expected tools: cut, sort, head
+# Output format: Five numbers, one per line, sorted descending
+# Save to: output/part1_glucose_stats.txt
+cut -d',' -f7 health_data.csv | tail -n+2 | sort -nr | head -n5 > output/part1_glucose_stats.txt
+
+###Part 2
+# Create virtual environment
+python3 -m venv .venv
+
+# Activate (Windows)
+.venv\Scripts\activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Verify installation
+python -c "import numpy; print(numpy.__version__)"
+
+# Deactivate when done
+deactivate
